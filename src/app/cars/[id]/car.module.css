@@ -1,0 +1,28 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.mainTitle{
+  text-align: center;
+  margin: 20px 0;
+}
+
+.car{
+  width: 30%;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.carBrand{
+  font-weight: bold;
+}
+
+.carDetails{
+  display: flex;
+  justify-content: space-between;
+}
