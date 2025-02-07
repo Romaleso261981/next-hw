@@ -11,7 +11,7 @@ interface Post {
 }
 
 async function fetchPosts(): Promise<Post[]> {
-  const axisRes: AxiosResponse = await getData<Post[]>("posts");
+  const axisRes: AxiosResponse = await getData<Post[]>("cars");
 
   if (axisRes.statusText !== "OK") {
     throw new Error("Failed to fetch users");
@@ -21,12 +21,14 @@ async function fetchPosts(): Promise<Post[]> {
 }
 
 export default async function PostsPage() {
-  const posts = await fetchPosts();
+  const cars = await fetchPosts();
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.mainTitle}>Posts</h1>
-      <ul className={styles.postsList}>
+      <h1 className={styles.mainTitle}>
+        {JSON.stringify(cars)}
+      </h1>
+      {/* <ul className={styles.postsList}>
         {posts.map(post =>
           <li key={post.id} className={styles.post}>
             <h2>
@@ -37,7 +39,7 @@ export default async function PostsPage() {
             </p>
           </li>
         )}
-      </ul>
+      </ul> */}
     </div>
   );
 }
