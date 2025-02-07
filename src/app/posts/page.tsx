@@ -1,45 +1,43 @@
 import React from "react";
-
 import styles from "./posts.module.css";
-import { getData } from "@/API";
-import { AxiosResponse } from "axios";
 
-interface Post {
+interface Car {
   id: number;
-  title: string;
-  body: string;
+  brand: string;
+  price: number;
+  year: number;
 }
 
-async function fetchPosts(): Promise<Post[]> {
-  const axisRes: AxiosResponse = await getData<Post[]>("cars");
-
-  if (axisRes.statusText !== "OK") {
-    throw new Error("Failed to fetch users");
+// Функція для отримання даних
+async function fetchCars(): Promise<Car[]> {
+  const response = await fetch("http://localhost:3000/api/cars");
+  if (!response.ok) {
+    throw new Error("Failed to fetch cars");
   }
-
-  return axisRes.data;
+  return response.json();
 }
 
 export default async function PostsPage() {
-  const cars = await fetchPosts();
+  const cars = await fetchCars();
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.mainTitle}>
-        {JSON.stringify(cars)}
-      </h1>
-      {/* <ul className={styles.postsList}>
-        {posts.map(post =>
-          <li key={post.id} className={styles.post}>
+      <h1 className={styles.mainTitle}>Cars</h1>
+      <ul className={styles.postsList}>
+        {cars.map(car =>
+          <li key={car.id} className={styles.post}>
             <h2>
-              {post.title}
+              {car.brand}
             </h2>
             <p>
-              {post.body}
+              Price: {car.price}
+            </p>
+            <p>
+              Year: {car.year}
             </p>
           </li>
         )}
-      </ul> */}
+      </ul>
     </div>
   );
 }

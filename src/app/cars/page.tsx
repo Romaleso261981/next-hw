@@ -26,16 +26,21 @@ async function fetchCars(): Promise<Car[]> {
 
 const CarsPage: React.FC = () => {
   const router = useRouter();
-
   const [cars, setCars] = useState<Car[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); // Індикатор завантаження
+  const [error, setError] = useState<string | null>(null); // Обробка помилок
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const carsData = await fetchCars();
         setCars(carsData);
       } catch (error) {
+        setError("Failed to load cars. Please try again later.");
         console.error("Error fetching cars:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -45,6 +50,18 @@ const CarsPage: React.FC = () => {
   const handleCardClick = (id: number) => {
     router.push(`/cars/${id}`);
   };
+
+  if (loading) {
+    return <div className={styles.container}>Loading...</div>; // Індикатор завантаження
+  }
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <p className={styles.error}>{error}</p> {/* Повідомлення про помилку */}
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -61,10 +78,10 @@ const CarsPage: React.FC = () => {
               {car.brand}
             </h2>
             <p>
-              {car.price}
+              Price: ${car.price}
             </p>
             <p>
-              {car.year}
+              Year: {car.year}
             </p>
           </li>
         )}
