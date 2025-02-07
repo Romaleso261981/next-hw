@@ -8,9 +8,13 @@ interface Car {
   year: number;
 }
 
+export const dynamic = "force-dynamic"; // Динамічний рендеринг
+
 // Функція для отримання даних
 async function fetchCars(): Promise<Car[]> {
-  const response = await fetch("http://localhost:3000/api/cars");
+  const response = await fetch("http://localhost:3000/api/cars", {
+    cache: "no-store" // Забороняємо кешування
+  });
   if (!response.ok) {
     throw new Error("Failed to fetch cars");
   }
