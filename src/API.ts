@@ -5,9 +5,15 @@ export enum apiBasePath {
   DAMMYJSON = "https://dummyjson.up.railway.app",
   JSONPLACEHOLDER = "https://jsonplaceholder.typicode.com"
 }
+// https://next-hw-two.vercel.app/
+
+const URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : "https://next-hw-two.vercel.app";
 
 const api = axios.create({
-  baseURL: apiBasePath.CARSBASEURL
+  baseURL: URL
 });
 
 export const getData = async <T>(url: string): Promise<AxiosResponse<T>> => {
