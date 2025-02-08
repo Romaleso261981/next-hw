@@ -49,10 +49,15 @@ export async function POST(request: NextRequest) {
 
     // Виконуємо запит до зовнішнього API для додавання нової карточки
     const response = await axios.post(`${BASE_URL}/cars`, {
-      brand: "brand",
-      price: 1254,
-      year: 2021
+      brand,
+      price,
+      year
     });
+
+    // Це долбане API непропускає прості данні
+    // brand: "brand",
+    // price: 1254,
+    // year: 2021
 
     const data = response.data;
 
