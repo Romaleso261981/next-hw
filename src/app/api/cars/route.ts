@@ -76,10 +76,13 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 export async function GET_BY_ID(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
+
+    console.log("id", id);
 
     if (!id) {
       return NextResponse.json(
