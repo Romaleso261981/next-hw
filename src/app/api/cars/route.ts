@@ -76,3 +76,35 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+export async function GET_BY_ID(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "ID параметр є обов'язковим" },
+        { status: 400 }
+      );
+    }
+
+    const response = await axios.get(`${BASE_URL}/cars/${id}`);
+    const data = response.data;
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error("Помилка при отриманні даних з API:", error);
+
+    if (axios.isAxiosError(error)) {
+      return NextResponse.json({
+        message: "Помилка при отриманні даних з API",
+        error: error.message
+      });
+    }
+
+    return NextResponse.json(
+      { message: "Невідома помилка", error: String(error) },
+      { status: 500 }
+    );
+  }
+}

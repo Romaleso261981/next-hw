@@ -1,77 +1,36 @@
-"use client";
-
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
-import styles from "./car.module.css";
+import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
 const BASE_URL = "http://owu.linkpc.net/carsAPI/v1";
 
-interface Car {
-  id: number;
-  brand: string;
-  price: number;
-  year: number;
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  try {
+    const { id } = req.query;
+
+    if (!id) {
+      return res.status(400).json({ message: "ID параметр є обов'язковим" });
+    }
+
+    const response = await axios.get(`${BASE_URL}/cars/${id}`);
+    const data = response.data;
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error("Помилка при отриманні даних з API:", error);
+
+    if (axios.isAxiosError(error)) {
+      return res.status(500).json({
+        message: "Помилка при отриманні даних з API",
+        error: error.message
+      });
+    }
+
+    return res.status(500).json({
+      message: "Невідома помилка",
+      error: String(error)
+    });
+  }
 }
-
-const CarsPage = () => {
-  const { id } = useParams();
-  const router = useRouter();
-  const [car, setCar] = useState<Car | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(
-    () => {
-      const fetchCar = async () => {
-        try {
-          const response = await axios.get(`${BASE_URL}/cars/${id}`);
-
-          const data = response.data;
-
-          setCar(data);
-        } catch (error) {
-          setError((error as Error).message);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchCar();
-    },
-    [id]
-  );
-
-  if (loading) return <div>Loading...</div>;
-  if (error)
-    return (
-      <div>
-        Error: {JSON.stringify(error)}
-      </div>
-    );
-
-  return (
-    <div className={styles.container}>
-      <button onClick={() => router.back()} className={styles.backButton}>
-        Back
-      </button>
-      <h1 className={styles.mainTitle}>
-        Car ID: {id}
-      </h1>
-      {car &&
-        <div className={styles.car}>
-          <h2 className={styles.carBrand}>
-            {car.brand}
-          </h2>
-          <p className={styles.carDetails}>
-            Price: {car.price}
-            <br />
-            Year: {car.year}
-          </p>
-        </div>}
-    </div>
-  );
-};
-
-export default CarsPage;
