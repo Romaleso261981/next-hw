@@ -14,10 +14,10 @@ const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
-      <button className={styles.button} onClick={() => navigateTo("/cars")}>
+      <button className={styles.button} onClick={() => navigateTo("/users")}>
         Users
       </button>
-      <button className={styles.button} onClick={() => navigateTo("/cars")}>
+      <button className={styles.button} onClick={() => navigateTo("/posts")}>
         Posts
       </button>
       <button className={styles.button} onClick={() => navigateTo("/cars")}>
