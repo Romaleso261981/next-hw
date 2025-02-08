@@ -1,7 +1,6 @@
 import React from "react";
 
 import styles from "./users.module.css";
-import { getData } from "@/API";
 
 interface Users {
   id: number;
@@ -22,14 +21,11 @@ interface Users {
   website: string;
 }
 
+// Функція для отримання даних
 async function fetchUsers(): Promise<Users[]> {
-  const axisRes = await getData<Users[]>("cars");
+  const res = await fetch("/api/cars");
 
-  if (axisRes.statusText !== "OK") {
-    throw new Error("Failed to fetch cars");
-  }
-
-  return axisRes.data;
+  return res.json();
 }
 
 export default async function UsersPage() {

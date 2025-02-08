@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./posts.module.css";
-import { getData } from "@/API";
 
 interface Post {
   id: number;
@@ -9,17 +8,15 @@ interface Post {
 }
 
 // Функція для отримання даних
-async function fetchCPosts(): Promise<Post[]> {
-  const axisRes = await getData<Post[]>("cars");
+async function fetchPosts(): Promise<Post[]> {
+  const res = await fetch("/api/cars");
 
-  if (axisRes.statusText !== "OK") {
-    throw new Error("Failed to fetch cars");
-  }
-
-  return axisRes.data;
+  return res.json();
 }
+
+// Компонент сторінки
 export default async function PostsPage() {
-  const posts = await fetchCPosts();
+  const posts = await fetchPosts();
 
   return (
     <div className={styles.container}>

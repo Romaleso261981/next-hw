@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     // Отримуємо searchParams із запиту
     const { searchParams } = new URL(request.url);
-    const endpoint = searchParams.get("endpoint") || "cars"; // за замовчуванням "cars"
+    const endpoint = searchParams.get("endpoint") || "cars";
 
     // Виконуємо запит до зовнішнього API
     const response = await axios.get(`${BASE_URL}/${endpoint}`);
