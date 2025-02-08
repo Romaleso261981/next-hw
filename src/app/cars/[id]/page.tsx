@@ -4,8 +4,9 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import styles from "./car.module.css";
-import { BASE_URL } from "@/app/api/cars/route";
 import axios from "axios";
+
+const BASE_URL = "http://owu.linkpc.net/carsAPI/v1";
 
 interface Car {
   id: number;

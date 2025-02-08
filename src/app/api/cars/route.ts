@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import axios from "axios";
 
-export const BASE_URL = "http://owu.linkpc.net/carsAPI/v1";
+const BASE_URL = "http://owu.linkpc.net/carsAPI/v1";
 
 export async function GET(request: NextRequest) {
   try {
