@@ -22,19 +22,18 @@ interface Users {
   website: string;
 }
 
-async function fetchPosts(): Promise<Users[]> {
-  // Запит до бекенду з опцією `cache: 'no-store'` для динамічного отримання даних
+async function fetchUsers(): Promise<Users[]> {
   const axisRes = await getData<Users[]>("cars");
 
   if (axisRes.statusText !== "OK") {
-    throw new Error("Failed to fetch users");
+    throw new Error("Failed to fetch cars");
   }
 
   return axisRes.data;
 }
 
 export default async function UsersPage() {
-  const users = await fetchPosts();
+  const users = await fetchUsers();
 
   return (
     <div className={styles.container}>

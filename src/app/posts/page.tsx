@@ -1,39 +1,37 @@
 import React from "react";
 import styles from "./posts.module.css";
+import { getData } from "@/API";
 
-interface Car {
+interface Post {
   id: number;
-  brand: string;
-  price: number;
-  year: number;
+  name: string;
+  body: number;
 }
 
 // Функція для отримання даних
-async function fetchCars(): Promise<Car[]> {
-  const response = await fetch("http://localhost:3000/api/cars");
-  if (!response.ok) {
+async function fetchCPosts(): Promise<Post[]> {
+  const axisRes = await getData<Post[]>("cars");
+
+  if (axisRes.statusText !== "OK") {
     throw new Error("Failed to fetch cars");
   }
-  return response.json();
-}
 
+  return axisRes.data;
+}
 export default async function PostsPage() {
-  const cars = await fetchCars();
+  const posts = await fetchCPosts();
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.mainTitle}>Cars</h1>
+      <h1 className={styles.mainTitle}>Posts</h1>
       <ul className={styles.postsList}>
-        {cars.map(car =>
-          <li key={car.id} className={styles.post}>
+        {posts.map(post =>
+          <li key={post.id} className={styles.post}>
             <h2>
-              {car.brand}
+              {post.name}
             </h2>
             <p>
-              Price: {car.price}
-            </p>
-            <p>
-              Year: {car.year}
+              Price: {post.body}
             </p>
           </li>
         )}
