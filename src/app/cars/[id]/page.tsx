@@ -4,6 +4,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import styles from "./car.module.css";
+import { BASE_URL } from "@/app/api/cars/route";
+import axios from "axios";
 
 interface Car {
   id: number;
@@ -23,13 +25,10 @@ const CarsPage = () => {
     () => {
       const fetchCar = async () => {
         try {
-          const response = await fetch(
-            `http://owu.linkpc.net/carsAPI/v1/cars/${id}`
-          );
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const data = await response.json();
+          const response = await axios.get(`${BASE_URL}/cars/${id}`);
+
+          const data = response.data;
+
           setCar(data);
         } catch (error) {
           setError((error as Error).message);

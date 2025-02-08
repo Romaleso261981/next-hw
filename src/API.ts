@@ -5,8 +5,6 @@ const URL =
     ? "http://localhost:3000/"
     : "https://next-hw-two.vercel.app";
 
-console.log("URL", URL);
-
 export const api = axios.create({
   baseURL: URL
 });
@@ -29,7 +27,6 @@ export const postData = async <T, R>(
   data: T
 ): Promise<AxiosResponse<R>> => {
   try {
-    console.log("postData", url, data);
     const response = await api.post<R>(url, data, {
       headers: {
         "Content-Type": "application/json"

@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import axios from "axios";
 
-const BASE_URL = "http://owu.linkpc.net/carsAPI/v1";
+export const BASE_URL = "http://owu.linkpc.net/carsAPI/v1";
 
 export async function GET(request: NextRequest) {
   try {
@@ -12,9 +12,6 @@ export async function GET(request: NextRequest) {
     // Виконуємо запит до зовнішнього API
     const response = await axios.get(`${BASE_URL}/${endpoint}`);
     const data = response.data;
-
-    console.log(data);
-    console.log(process.env.NODE_ENV === "development");
 
     // Повертаємо успішну відповідь із JSON
     return NextResponse.json(data);
@@ -58,7 +55,6 @@ export async function POST(request: NextRequest) {
     });
 
     const data = response.data;
-    console.log("data", data);
 
     // Повертаємо успішну відповідь із JSON
     return NextResponse.json(data, { status: 201 });

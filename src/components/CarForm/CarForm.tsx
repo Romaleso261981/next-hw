@@ -30,7 +30,6 @@ export const CarForm = () => {
     try {
       const response = await axios.post("/api/cars", data);
       const responseData = response.data;
-      console.log("data", responseData);
 
       if (response.status !== 201) {
         throw new Error("Failed to create car");
