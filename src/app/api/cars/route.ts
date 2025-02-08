@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const data = response.data;
 
     console.log(data);
-    console.log(process.env.NODE_ENV === "development")
+    console.log(process.env.NODE_ENV === "development");
 
     // Повертаємо успішну відповідь із JSON
     return NextResponse.json(data);
@@ -23,10 +23,54 @@ export async function GET(request: NextRequest) {
 
     // Якщо axios генерує помилку, обробляємо її
     if (axios.isAxiosError(error)) {
+      return NextResponse.json({
+        message: "Помилка при отриманні даних з API",
+        error: error.message
+      });
+    }
+
+    // Для інших типів помилок
+    return NextResponse.json(
+      { message: "Невідома помилка", error: String(error) },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { brand, price, year } = body;
+
+    // Перевірка наявності необхідних полів
+    if (!brand || !price || !year) {
       return NextResponse.json(
-        { message: "Помилка при отриманні даних з API", error: error.message },
-        { status: error.response?.status || 500 }
+        { message: "Всі поля (brand, price, year) повинні бути заповнені" },
+        { status: 400 }
       );
+    }
+
+    // Виконуємо запит до зовнішнього API для додавання нової карточки
+    const response = await axios.post(`${BASE_URL}/cars`, {
+      brand: "brand",
+      price: 1254,
+      year: 2021
+    });
+
+    const data = response.data;
+    console.log("data", data);
+
+    // Повертаємо успішну відповідь із JSON
+    return NextResponse.json(data, { status: 201 });
+  } catch (error) {
+    console.error("Помилка при додаванні даних до API:", error);
+
+    // Якщо axios генерує помилку, обробляємо її
+    if (axios.isAxiosError(error)) {
+      return NextResponse.json({
+        message: "Помилка при додаванні даних до API",
+        error: error.message
+      });
     }
 
     // Для інших типів помилок

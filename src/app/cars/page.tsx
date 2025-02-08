@@ -6,7 +6,7 @@ import styles from "./cars.module.css";
 import { useRouter } from "next/navigation";
 import { CarForm } from "@/components";
 
-interface Car {
+export interface Car {
   id: number;
   brand: string;
   price: number;
@@ -25,8 +25,6 @@ const CarsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true); // Індикатор завантаження
   const [error, setError] = useState<string | null>(null); // Обробка помилок
 
-  console.log(cars);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -43,8 +41,6 @@ const CarsPage: React.FC = () => {
 
     fetchData();
   }, []);
-
-  console.log(cars);
 
   const handleCardClick = (id: number) => {
     router.push(`/cars/${id}`);
