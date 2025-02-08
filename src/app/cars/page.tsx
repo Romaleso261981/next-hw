@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./cars.module.css";
 import { useRouter } from "next/navigation";
 import { CarForm } from "@/components";
-import { getData } from "@/API";
 
 interface Car {
   id: number;
@@ -15,13 +14,9 @@ interface Car {
 }
 
 async function fetchCars(): Promise<Car[]> {
-  const axisRes = await getData<Car[]>("cars");
+  const res = await fetch("/api/cars");
 
-  if (axisRes.statusText !== "OK") {
-    throw new Error("Failed to fetch cars");
-  }
-
-  return axisRes.data;
+  return res.json();
 }
 
 const CarsPage: React.FC = () => {
@@ -29,6 +24,8 @@ const CarsPage: React.FC = () => {
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Індикатор завантаження
   const [error, setError] = useState<string | null>(null); // Обробка помилок
+
+  console.log(cars);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,6 +43,8 @@ const CarsPage: React.FC = () => {
 
     fetchData();
   }, []);
+
+  console.log(cars);
 
   const handleCardClick = (id: number) => {
     router.push(`/cars/${id}`);

@@ -9,8 +9,10 @@ export enum apiBasePath {
 
 const URL =
   process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
+    ? "http://localhost:3000/"
     : "https://next-hw-two.vercel.app";
+
+console.log("URL", URL);
 
 const api = axios.create({
   baseURL: URL
