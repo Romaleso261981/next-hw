@@ -1,11 +1,14 @@
+"use client";
+
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import styles from "./carForm.module.css";
 import { useState } from "react";
-import axios from "axios";
+import { addCar } from "@/service/api.service";
 
 interface CarFormInputs {
+  id: number;
   brand: string;
   price: number;
   year: number;
@@ -13,8 +16,8 @@ interface CarFormInputs {
 
 const schema = Joi.object({
   brand: Joi.string().required(),
-  price: Joi.number().required().min(0),
-  year: Joi.number().required().min(1886).max(new Date().getFullYear())
+  price: Joi.number().required().min(0).max(1000000),
+  year: Joi.number().required().min(1990).max(2024)
 });
 
 export const CarForm = () => {
@@ -28,14 +31,9 @@ export const CarForm = () => {
   const onSubmit = async (data: CarFormInputs) => {
     setLoading(true);
     try {
-      const response = await axios.post("/api/cars", data);
-      const responseData = response.data;
+      const response = await addCar(data);
 
-      if (response.status !== 201) {
-        throw new Error("Failed to create car");
-      }
-
-      alert(`Car created successfully! ${JSON.stringify(responseData)}`);
+      alert(`Car created successfully! ${JSON.stringify(response)}`);
     } catch (error) {
       alert(`Error: ${(error as Error).message}`);
     } finally {
