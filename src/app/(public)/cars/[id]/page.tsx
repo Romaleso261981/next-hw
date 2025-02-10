@@ -1,79 +1,49 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
 import styles from "./car.module.css";
+import { fetchData } from "@/service/api.service";
+import { Car } from "@/types/types";
 
-interface Car {
-  id: number;
-  brand: string;
-  price: number;
-  year: number;
-}
-
-async function fetchCars(): Promise<Car[]> {
-  const res = await fetch("/api/cars");
-
-  return res.json();
+async function fetchCar(id: string | string[]): Promise<Car | null> {
+  const cars = await fetchData<Car[]>("cars");
+  return cars.find(car => car.id === Number(id)) || null;
 }
 
 const CarsPage = () => {
   const { id } = useParams();
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   useEffect(
     () => {
-      const fetchData = async () => {
-        try {
-          setLoading(true);
-          const carsData = await fetchCars();
-          setCar(carsData.find(car => car.id === Number(id)) || null);
-        } catch (error) {
-          setError("Failed to load cars. Please try again later.");
-          console.error("Error fetching cars:", error);
-        } finally {
+      if (id) {
+        fetchCar(id).then(fetchedCar => {
+          setCar(fetchedCar);
           setLoading(false);
-        }
-      };
-
-      fetchData();
+        });
+      }
     },
     [id]
   );
 
-  if (loading) return <div>Loading...</div>;
-  if (error)
-    return (
-      <div>
-        Error: {JSON.stringify(error)}
-      </div>
-    );
+  if (loading) {
+    return <div className={styles.container}>Loading...</div>;
+  }
 
-  return (
-    <div className={styles.container}>
-      <button onClick={() => router.back()} className={styles.backButton}>
-        Back
-      </button>
-      <h1 className={styles.mainTitle}>
-        Car ID: {id}
-      </h1>
-      {car &&
-        <div className={styles.car}>
-          <h2 className={styles.carBrand}>
-            {car.brand}
-          </h2>
-          <p className={styles.carDetails}>
-            Price: {car.price}
-            <br />
-            Year: {car.year}
-          </p>
-        </div>}
-    </div>
-  );
+  return car
+    ? <div className={styles.car}>
+        <h2 className={styles.carBrand}>
+          {car.brand}
+        </h2>
+        <p className={styles.carDetails}>
+          Price: {car.price}
+          <br />
+          Year: {car.year}
+        </p>
+      </div>
+    : <div className={styles.container}>Car not found</div>;
 };
 
 export default CarsPage;
