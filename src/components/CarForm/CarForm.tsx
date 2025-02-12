@@ -1,34 +1,19 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { joiResolver } from "@hookform/resolvers/joi";
-import Joi from "joi";
 import styles from "./carForm.module.css";
 import { useState } from "react";
 import { addCar } from "@/service/api.service";
-
-interface CarFormInputs {
-  id: number;
-  brand: string;
-  price: number;
-  year: number;
-}
-
-const schema = Joi.object({
-  brand: Joi.string().required(),
-  price: Joi.number().required().min(0).max(1000000),
-  year: Joi.number().required().min(1990).max(2024)
-});
+import { Car } from "@/types/types";
+import { useValidation } from "@/validators/useValidation";
 
 export const CarForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<
-    CarFormInputs
-  >({
-    resolver: joiResolver(schema)
+  const { register, handleSubmit, formState: { errors } } = useForm<Car>({
+    resolver: useValidation()
   });
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (data: CarFormInputs) => {
+  const onSubmit = async (data: Car) => {
     setLoading(true);
     try {
       const response = await addCar(data);

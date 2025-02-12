@@ -11,8 +11,12 @@
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "axios": "^1.7.9",
+    "clsx": "^2.1.1",
+    "cookies-next": "^5.1.0",
     "joi": "^17.13.3",
     "next": "15.1.6",
+    "better-sqlite3": "11.8.1",
+    "@types/better-sqlite3": "7.6.12",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2"

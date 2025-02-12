@@ -1,11 +1,11 @@
-import { fetchData } from "@/service/api.service";
 import { Car } from "@/types/types";
 
 import styles from "./carsPage.module.css";
 import CarsList from "@/components/CarsList/CarsList";
+import { getCars } from "@/server-action/serverActons";
 
 async function fetchCars(): Promise<Car[]> {
-  return await fetchData<Car[]>("cars");
+  return await getCars();
 }
 
 export default async function CarsPage() {

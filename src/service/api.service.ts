@@ -1,4 +1,4 @@
-import { Car } from "../types/types";
+import { Car, Posts, Users } from "../types/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -24,4 +24,16 @@ export const addCar = async (car: Car): Promise<Car> => {
   }
   const data: Car = await response.json();
   return data;
+};
+
+export const getUsers = async (): Promise<Users[]> => {
+  return await fetch(
+    "https://jsonplaceholder.typicode.com/users"
+  ).then(response => response.json());
+};
+
+export const getPosts = async (): Promise<Posts[]> => {
+  return await fetch(
+    "https://jsonplaceholder.typicode.com/posts"
+  ).then(response => response.json());
 };
